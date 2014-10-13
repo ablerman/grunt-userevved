@@ -1,6 +1,6 @@
 # grunt-userevved
 
-> Use revved filenames for static assets.
+> Use revved filenames for static assets. Right now it just fixes the file references in the js/map files that refer to each other.
 
 ## Getting Started
 This plugin requires Grunt.
