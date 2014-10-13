@@ -19,7 +19,6 @@ module.exports = function (grunt) {
     grunt.registerMultiTask('userevved', 'Use revved filenames for static assets.', function () {
 
         var summary = grunt.filerev.summary;
-        console.log(summary);
 
         // Merge task-specific and/or target-specific options with these defaults.
         var options = this.options({
@@ -49,13 +48,11 @@ module.exports = function (grunt) {
         this.processJs = function() {
             var jsFiles = grunt.file.expand(this.data.js);
             _.each(jsFiles, function(path) {
-                console.log('+' + path)
                 var pathParts = path.split('/');
                 var justThePath = pathParts.slice(0, pathParts.length-1).join('/');
                 var content = grunt.file.read(path);
 
                 var re = /\/\/# sourceMappingURL=(.+)/gm;
-                var matches = content.match(re);
                 content = content.replace(re, function(match, group) {
                     var lookupVal = justThePath + '/' + group;
                     if(_.has(summary, lookupVal)) {
@@ -66,19 +63,37 @@ module.exports = function (grunt) {
                     return match;
                 });
                 grunt.file.write(path, content);
-                console.log('-' + path)
             });
         };
         this.processJs();
 
+        this.processCss = function() {
+            var cssFiles = grunt.file.expand(this.data.css);
+            _.each(cssFiles, function(path) {
+                var pathParts = path.split('/');
+                var justThePath = pathParts.slice(0, pathParts.length-1).join('/');
+                var content = grunt.file.read(path);
+
+                var re = /\/\*# sourceMappingURL=(.+)\*\//gm;
+                content = content.replace(re, function(match, group) {
+                    var lookupVal = justThePath + '/' + group;
+                    lookupVal = lookupVal.trim();
+                    if(_.has(summary, lookupVal)) {
+                        var newFile = summary[lookupVal];
+                        var parts = newFile.split('/');
+                        return '/*# sourceMappingURL=' + parts[parts.length-1] + ' */';
+                    }
+                    return match;
+                });
+                grunt.file.write(path, content);
+            });
+        };
+        this.processCss();
 
         var processHtml = function() {
 
         };
 
-        var processCss = function() {
-
-        };
 
         var processJs = function() {
 
