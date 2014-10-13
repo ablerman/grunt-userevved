@@ -35,11 +35,13 @@ module.exports = function (grunt) {
                 var content = grunt.file.readJSON(path);
 
                 var lookupVal = justThePath + '/' + content.file;
-                var newFile = summary[lookupVal];
-                var parts = newFile.split('/');
+                if(_.has(summary, lookupVal)) {
+                    var newFile = summary[lookupVal];
+                    var parts = newFile.split('/');
 
-                content.file = parts[parts.length-1]
-                grunt.file.write(path, json.stringify(content) );
+                    content.file = parts[parts.length-1];
+                    grunt.file.write(path, json.stringify(content) );
+                }
             });
         };
         this.processMap();
@@ -47,19 +49,24 @@ module.exports = function (grunt) {
         this.processJs = function() {
             var jsFiles = grunt.file.expand(this.data.js);
             _.each(jsFiles, function(path) {
+                console.log('+' + path)
                 var pathParts = path.split('/');
                 var justThePath = pathParts.slice(0, pathParts.length-1).join('/');
                 var content = grunt.file.read(path);
 
-                var re = /\/\/# sourceMappingURL=(.+)/gm
+                var re = /\/\/# sourceMappingURL=(.+)/gm;
                 var matches = content.match(re);
                 content = content.replace(re, function(match, group) {
                     var lookupVal = justThePath + '/' + group;
-                    var newFile = summary[lookupVal];
-                    var parts = newFile.split('/');
-                    return '//# sourceMappingURL=' + parts[parts.length-1];
+                    if(_.has(summary, lookupVal)) {
+                        var newFile = summary[lookupVal];
+                        var parts = newFile.split('/');
+                        return '//# sourceMappingURL=' + parts[parts.length-1];
+                    }
+                    return match;
                 });
                 grunt.file.write(path, content);
+                console.log('-' + path)
             });
         };
         this.processJs();
