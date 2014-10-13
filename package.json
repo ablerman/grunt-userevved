@@ -1,0 +1,33 @@
+{
+  "name": "grunt-userevved",
+  "version": "0.0.1",
+  "description": "Use revved filenames for static assets.",
+  "repository": "",
+  "author": {
+    "name": "Sandy Lerman",
+    "email": "",
+    "url": ""
+  },
+  "keywords": [
+    "gruntplugin"
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-nodeunit": "~0.3.0",
+    "grunt": "~0.4.2",
+    "jshint-stylish": "~0.1.5",
+    "load-grunt-tasks": "~0.3.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "lodash": "~2.4.1"
+  }
+}
