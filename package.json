@@ -1,6 +1,6 @@
 {
   "name": "grunt-userevved",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Use revved filenames for static assets.",
   "repository": "",
   "author": {
